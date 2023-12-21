@@ -49,7 +49,7 @@ function getPackageNameRequire() {
   let selectedPackage = currentLine.match(/require\(\'(.*)\'\)/);
   if (!selectedPackage || (selectedPackage && selectedPackage.length < 2)) {
     selectedPackage = currentLine.match(
-      /(?:["'\s]*([\w*{}\n, ]+)from\s*)?["'\s]*([@\w_-]+)["'\s]*;?/
+      /(?:["'\s]*([\w*{}\n, ]+)from\s*)?["'\s]*([@\w_/-]+)["'\s]*;?/
     )[2];
   } else {
     selectedPackage = selectedPackage[1];
@@ -59,18 +59,14 @@ function getPackageNameRequire() {
 }
 
 function managePackage(handle, selectedPackage, packageSrc, isDev) {
-  const isReact = selectedPackage === 'react';
-  if (isReact) {
-    selectedPackage = 'react react-dom';
-  }
   const install = handle === 'install';
   pkgUp({ cwd: packageSrc })
     .then(folder => {
       const allPackages = getAllPackages(folder);
       if (
         install
-          ? allPackages.includes(isReact ? 'react' : selectedPackage)
-          : !allPackages.includes(isReact ? 'react' : selectedPackage)
+          ? allPackages.includes(selectedPackage)
+          : !allPackages.includes(selectedPackage)
       ) {
         if (install) {
           vscode.window.showErrorMessage('The package is already installed');
@@ -84,6 +80,7 @@ function managePackage(handle, selectedPackage, packageSrc, isDev) {
 
       const currentFolder = path.dirname(folder);
 
+      vscode.window.showInformationMessage(`Package "${selectedPackage}" is installing...`);
       const statusStarting = customStatusBar(
         `$(trashcan) ${selectedPackage} is ${install
           ? 'installing'

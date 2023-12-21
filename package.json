@@ -1,16 +1,16 @@
 {
-  "name": "vscode-here-and-now",
-  "displayName": "Here & Now: Install/remove packages from code",
-  "description": "Install/remove your npm-packages directly from code",
-  "version": "0.0.2",
-  "publisher": "orkhanjafarovr",
+  "name": "npm-package-quick-install",
+  "displayName": "Npm Packages Quick Install",
+  "description": "Install/remove npm-packages directly from code",
+  "version": "0.0.5",
+  "publisher": "snys98",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.32.0"
   },
   "repository": {
     "type": "MIT",
-    "url": "https://github.com/gigantz/vscode-here-and-now"
+    "url": "https://github.com/snys98/npm-package-quick-install"
   },
   "categories": ["Other"],
   "activationEvents": [
@@ -39,33 +39,36 @@
         "command": "extension.installPackage",
         "key": "shift+alt+i",
         "mac": "shift+alt+i",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && editorHasSelection"
       },
       {
         "command": "extension.installDevPackage",
         "key": "shift+alt+d",
         "mac": "shift+alt+d",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && editorHasSelection"
       },
       {
         "command": "extension.removePackage",
         "key": "shift+alt+u",
         "mac": "shift+alt+u",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && editorHasSelection"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "command": "extension.installPackage",
+          "when": "editorTextFocus && editorHasSelection",
           "group": "YourGroup@1"
         },
         {
           "command": "extension.installDevPackage",
+          "when": "editorTextFocus && editorHasSelection",
           "group": "YourGroup@2"
         },
         {
           "command": "extension.removePackage",
+          "when": "editorTextFocus && editorHasSelection",
           "group": "YourGroup@3"
         }
       ]

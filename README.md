@@ -1,14 +1,17 @@
 # vscode-here-and-now
 Easily install/remove npm package directly from your code or package.json file.
 
-![feature](vscode-here-and-now.gif)
+![feature](npm-package-quick-install.gif)
 
-**by clicking here**
+**by select package name here**
 ```javascript
 import foo from 'bar';
 const foo2 = require('baz');
 ```
 **Or in package.json**
+
+**then right click or through command**
+
 #
 ## Key-bindings:
 Install package: `shift + alt + i`\
