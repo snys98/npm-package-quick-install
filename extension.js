@@ -36,6 +36,16 @@ function getCurrentLineText() {
   return vscode.window.activeTextEditor.document.getText(textRange);
 }
 
+function getCurrentSelectText() {
+  let activeEditor = vscode.window.activeTextEditor;
+  if (activeEditor) {
+    let selection = activeEditor.selection;
+    let text = activeEditor.document.getText(selection);
+    return text;
+  }
+  return "";
+}
+
 function getPackageNameJson() {
   const currentLine = getCurrentLineText();
   const selectedPackage = currentLine.split('"')[1];
@@ -59,6 +69,7 @@ function getPackageNameRequire() {
 }
 
 function managePackage(handle, selectedPackage, packageSrc, isDev) {
+  vscode.window.showInformationMessage(`Installing package "${selectedPackage}" to ${isDev ? "devDependencies" : "dependencies"}...`);
   const install = handle === 'install';
   pkgUp({ cwd: packageSrc })
     .then(folder => {
@@ -80,7 +91,6 @@ function managePackage(handle, selectedPackage, packageSrc, isDev) {
 
       const currentFolder = path.dirname(folder);
 
-      vscode.window.showInformationMessage(`Package "${selectedPackage}" is installing...`);
       const statusStarting = customStatusBar(
         `$(trashcan) ${selectedPackage} is ${install
           ? 'installing'
@@ -151,7 +161,7 @@ function managePackage(handle, selectedPackage, packageSrc, isDev) {
 
 function installPackage(isDev = false) {
   if (/package\.json$/.test(vscode.window.activeTextEditor.document.fileName)) {
-    const { selectedPackage } = getPackageNameJson();
+    const selectedPackage = getCurrentSelectText();
     managePackage(
       'install',
       selectedPackage,
@@ -160,7 +170,7 @@ function installPackage(isDev = false) {
     );
   } else {
     try {
-      const selectedPackage = getPackageNameRequire();
+      const selectedPackage = getCurrentSelectText();
       managePackage(
         'install',
         selectedPackage,
@@ -174,9 +184,14 @@ function installPackage(isDev = false) {
 }
 
 function activate(context) {
-  vscode.commands.registerCommand('extension.installPackage', installPackage);
-  vscode.commands.registerCommand('extension.installDevPackage', () =>
+  vscode.commands.registerCommand('extension.installPackage', () => {
+    console.log('installPackage');
+    installPackage()
+  });
+  vscode.commands.registerCommand('extension.installDevPackage', () => {
+    console.log('installDevPackage');
     installPackage(true)
+  }
   );
 
   vscode.commands.registerCommand('extension.removePackage', () => {
@@ -206,5 +221,5 @@ function activate(context) {
 
 exports.activate = activate;
 
-function deactivate() {}
+function deactivate() { }
 exports.deactivate = deactivate;

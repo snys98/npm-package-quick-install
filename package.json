@@ -2,8 +2,8 @@
   "name": "npm-package-quick-install",
   "displayName": "Npm Packages Quick Install",
   "description": "Install/remove npm-packages directly from code",
-  "version": "0.0.5",
-  "publisher": "snys98",
+  "version": "0.0.6",
+  "publisher": "Lulus",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.32.0"
